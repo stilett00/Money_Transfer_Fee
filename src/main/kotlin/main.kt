@@ -1,3 +1,47 @@
 fun main() {
+    println(calcCommission("Mastercard", 50_000, 100_000)) // Пример: Mastercard, комиссия 470 руб.
+    println(calcCommission("Visa", 0, 100_000))           // Пример: Visa, комиссия 750 руб.
+    println(calcCommission("Mir", 0, 100_000))
+    println(calcCommission("Mastercard", 80_000, 50_000))
+}
 
+fun calcCommission(cardType: String, monthlyTransfers: Int, transfer: Int): String {
+    val dailyLimit = 150_000
+    val monthlyLimit = 600_000
+    val limitMastercard = 75_000
+
+    if (transfer > dailyLimit) {
+        return "Превышен дневной лимит"
+    }
+
+    if (transfer + monthlyTransfers > monthlyLimit) {
+        return "Превышен месячный лимит"
+    }
+
+    val commission = when (cardType) {
+        "Mir" -> 0
+        "Visa" -> {
+            val calculated = (transfer * 0.0075).toInt()
+            Math.max(calculated, 35)
+        }
+        "Mastercard" -> {
+            if (monthlyTransfers < limitMastercard) {
+                val amountOverLimit = (monthlyTransfers + transfer) - limitMastercard
+                if (amountOverLimit > 0) {
+                    (amountOverLimit * 0.006 + 20).toInt()
+                } else {
+                    0
+                }
+            } else {
+                (transfer * 0.006 + 20).toInt()
+            }
+        }
+        else -> return "Неверный ввод"
+    }
+
+    return if (commission == 0) {
+        "Комиссия не взимается"
+    } else {
+        "Комиссия составит $commission руб."
+    }
 }
