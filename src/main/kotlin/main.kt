@@ -1,11 +1,11 @@
 fun main() {
-    println(calcCommission("Mastercard", 50_000, 100_000)) // Пример: Mastercard, комиссия 470 руб.
-    println(calcCommission("Visa", 0, 100_000))           // Пример: Visa, комиссия 750 руб.
-    println(calcCommission("Mir", 0, 100_000))
+    println(calcCommission(transfer = 60_000))
+    println(calcCommission("Visa", transfer = 77_000))
+    println(calcCommission("Mastercard", transfer = 30_000))
     println(calcCommission("Mastercard", 80_000, 50_000))
 }
 
-fun calcCommission(cardType: String, monthlyTransfers: Int, transfer: Int): String {
+fun calcCommission(cardType: String = "Mir", monthlyTransfers: Int = 0, transfer: Int): String {
     val dailyLimit = 150_000
     val monthlyLimit = 600_000
     val limitMastercard = 75_000
